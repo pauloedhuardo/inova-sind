@@ -51,6 +51,9 @@ const Header = async () => {
                         <Button className="gap-2" variant="default">
                             <Link href="/service">Serviço</Link>
                         </Button>
+                        <Button className="gap-2" variant="default">
+                            <Link href="/type">Tipos</Link>
+                        </Button>
                     </>
                 )}
             </div>

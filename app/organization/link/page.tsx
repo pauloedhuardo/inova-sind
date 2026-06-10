@@ -3,8 +3,10 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
   getProducts,
   getServices,
+  getTypeProductService,
   type GetProducts200Item,
   type GetServices200Item,
+  type GetTypeProductService200Item,
 } from "@/app/_lib/api/fetch-generated"
 
 import { LinkForm } from "./link-form"
@@ -42,15 +44,18 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
   } = params
 
   const date = new Date().toISOString().split("T")[0]
-  const [productsResponse, servicesResponse] = await Promise.all([
+  const [productsResponse, servicesResponse, typesResponse] = await Promise.all([
     getProducts(),
     getServices(date),
+    getTypeProductService(),
   ])
 
   const products: GetProducts200Item[] =
     productsResponse.status === 200 ? productsResponse.data : []
   const services: GetServices200Item[] =
     servicesResponse.status === 200 ? servicesResponse.data : []
+  const types: GetTypeProductService200Item[] =
+    typesResponse.status === 200 ? typesResponse.data : []
 
   return (
     <div className="flex flex-col p-4">
@@ -99,9 +104,9 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
         </Card>
 
         {mode === "create" && type === "product" ? (
-          <ProductLinkForm organizationId={organizationId} />
+          <ProductLinkForm organizationId={organizationId} types={types} />
         ) : mode === "create" && type === "service" ? (
-          <ServiceLinkForm organizationId={organizationId} />
+          <ServiceLinkForm organizationId={organizationId} types={types} />
         ) : (
           <LinkForm
             products={products}

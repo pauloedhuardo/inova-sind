@@ -22,30 +22,29 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
-import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createProductAction } from "./actions"
+import { createTypeAction } from "./actions"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
-  description: z.string().min(1, "Descrição é obrigatória"),
-  typeId: z.string().min(1, "Tipo é obrigatório"),
+  type: z.enum(["PRODUCT", "SERVICE"], { message: "Tipo é obrigatório" }),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-interface Props {
-  types: GetTypeProductService200Item[]
-}
+const typeOptions = [
+  { label: "Produto", value: "PRODUCT" },
+  { label: "Serviço", value: "SERVICE" },
+] as const
 
-export function ProductForm({ types }: Props) {
+export function TypeForm() {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: { name: "", description: "", typeId: "" },
+    defaultValues: { name: "", type: undefined },
   })
 
   async function onSubmit(values: FormValues) {
-    const result = await createProductAction(values)
+    const result = await createTypeAction(values)
     if (result?.error) {
       form.setError("root", { message: result.error })
     }
@@ -54,7 +53,7 @@ export function ProductForm({ types }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cadastro de Produto</CardTitle>
+        <CardTitle>Cadastro de Tipo</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -66,7 +65,7 @@ export function ProductForm({ types }: Props) {
                 <FormItem>
                   <FormLabel>Nome *</FormLabel>
                   <FormControl>
-                    <Input placeholder="Nome do produto" {...field} />
+                    <Input placeholder="Nome do tipo" {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -74,25 +73,7 @@ export function ProductForm({ types }: Props) {
             />
             <FormField
               control={form.control}
-              name="description"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Descrição *</FormLabel>
-                  <FormControl>
-                    <textarea
-                      placeholder="Descreva o produto"
-                      rows={4}
-                      className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="typeId"
+              name="type"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Tipo *</FormLabel>
@@ -103,9 +84,9 @@ export function ProductForm({ types }: Props) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {types.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
-                          {type.name}
+                      {typeOptions.map((opt) => (
+                        <SelectItem key={opt.value} value={opt.value}>
+                          {opt.label}
                         </SelectItem>
                       ))}
                     </SelectContent>

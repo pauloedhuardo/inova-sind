@@ -15,28 +15,37 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
 import { createServiceAction } from "./actions"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
   description: z.string().min(1, "Descrição é obrigatória"),
+  typeId: z.string().min(1, "Tipo é obrigatório"),
 })
 
 type FormValues = z.infer<typeof formSchema>
 
-export function ServiceForm() {
+interface Props {
+  types: GetTypeProductService200Item[]
+}
+
+export function ServiceForm({ types }: Props) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      description: "",
-    },
+    defaultValues: { name: "", description: "", typeId: "" },
   })
 
   async function onSubmit(values: FormValues) {
     const result = await createServiceAction(values)
-
     if (result?.error) {
       form.setError("root", { message: result.error })
     }
@@ -73,10 +82,34 @@ export function ServiceForm() {
                     <textarea
                       placeholder="Descreva o serviço"
                       rows={4}
-                      className="border-input bg-background ring-offset-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
+                      className="border-input bg-background placeholder:text-muted-foreground focus-visible:ring-ring flex min-h-[80px] w-full rounded-md border px-3 py-2 text-sm focus-visible:ring-1 focus-visible:outline-none disabled:cursor-not-allowed disabled:opacity-50"
                       {...field}
                     />
                   </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <FormField
+              control={form.control}
+              name="typeId"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Tipo *</FormLabel>
+                  <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
+                    <FormControl>
+                      <SelectTrigger className="w-full">
+                        <SelectValue placeholder="Selecione um tipo" />
+                      </SelectTrigger>
+                    </FormControl>
+                    <SelectContent>
+                      {types.map((type) => (
+                        <SelectItem key={type.id} value={type.id}>
+                          {type.name}
+                        </SelectItem>
+                      ))}
+                    </SelectContent>
+                  </Select>
                   <FormMessage />
                 </FormItem>
               )}

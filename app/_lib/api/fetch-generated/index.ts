@@ -87,6 +87,8 @@ export type CreateOrganization500 = {
 export type GetOrganizations200Item = {
   id: string;
   name: string;
+  /** @nullable */
+  averageScore: number | null;
 };
 
 export type GetOrganizations401 = {
@@ -139,11 +141,125 @@ export type CreateOrganizationProduct500 = {
   code: string;
 };
 
+export type GetOrganization200ProductsItem = {
+  name: string;
+  /** @nullable */
+  description: string | null;
+};
+
+export type GetOrganization200ServicesItem = {
+  name: string;
+  description: string;
+};
+
+export type GetOrganization200AssessmentsItemUser = {
+  name: string;
+};
+
+export type GetOrganization200AssessmentsItem = {
+  user: GetOrganization200AssessmentsItemUser;
+  assessmentDate: string;
+  /** @nullable */
+  assessmentComments: string | null;
+  assessmentScore: number;
+};
+
+export type GetOrganization200 = {
+  id: string;
+  name: string;
+  /** @nullable */
+  cnpj: string | null;
+  /** @nullable */
+  address: string | null;
+  phone: string;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
+  contact: string | null;
+  products: GetOrganization200ProductsItem[];
+  services: GetOrganization200ServicesItem[];
+  assessments: GetOrganization200AssessmentsItem[];
+};
+
+export type GetOrganization401 = {
+  error: string;
+  code: string;
+};
+
+export type GetOrganization404 = {
+  error: string;
+  code: string;
+};
+
+export type GetOrganization500 = {
+  error: string;
+  code: string;
+};
+
+export type GetOrganizationsSearchParams = {
+/**
+ * @minLength 1
+ */
+search: string;
+};
+
+export type GetOrganizationsSearch200ItemProductsItem = {
+  name: string;
+  /** @nullable */
+  description: string | null;
+};
+
+export type GetOrganizationsSearch200ItemServicesItem = {
+  name: string;
+  description: string;
+};
+
+export type GetOrganizationsSearch200ItemAssessmentsItemUser = {
+  name: string;
+};
+
+export type GetOrganizationsSearch200ItemAssessmentsItem = {
+  user: GetOrganizationsSearch200ItemAssessmentsItemUser;
+  assessmentDate: string;
+  /** @nullable */
+  assessmentComments: string | null;
+  assessmentScore: number;
+};
+
+export type GetOrganizationsSearch200Item = {
+  id: string;
+  name: string;
+  /** @nullable */
+  cnpj: string | null;
+  /** @nullable */
+  address: string | null;
+  phone: string;
+  /** @nullable */
+  email: string | null;
+  /** @nullable */
+  contact: string | null;
+  products: GetOrganizationsSearch200ItemProductsItem[];
+  services: GetOrganizationsSearch200ItemServicesItem[];
+  assessments: GetOrganizationsSearch200ItemAssessmentsItem[];
+};
+
+export type GetOrganizationsSearch401 = {
+  error: string;
+  code: string;
+};
+
+export type GetOrganizationsSearch500 = {
+  error: string;
+  code: string;
+};
+
 export type CreateProductBody = {
   /** @minLength 1 */
   name: string;
   /** @minLength 1 */
   description: string;
+  /** @minLength 1 */
+  typeId: string;
 };
 
 export type CreateProduct200 = {
@@ -151,6 +267,7 @@ export type CreateProduct200 = {
   name: string;
   /** @nullable */
   description: string | null;
+  typeId: string;
 };
 
 export type CreateProduct401 = {
@@ -166,6 +283,7 @@ export type CreateProduct500 = {
 export type GetProducts200Item = {
   id: string;
   name: string;
+  typeId: string;
 };
 
 export type GetProducts401 = {
@@ -183,12 +301,15 @@ export type CreateServiceBody = {
   name: string;
   /** @minLength 1 */
   description: string;
+  /** @minLength 1 */
+  typeId: string;
 };
 
 export type CreateService201 = {
   id: string;
   name: string;
   description: string;
+  typeId: string;
 };
 
 export type CreateService401 = {
@@ -204,6 +325,7 @@ export type CreateService500 = {
 export type GetServices200Item = {
   id: string;
   name: string;
+  typeId: string;
 };
 
 export type GetServices401 = {
@@ -212,6 +334,68 @@ export type GetServices401 = {
 };
 
 export type GetServices500 = {
+  error: string;
+  code: string;
+};
+
+export type GetTypeProductService200ItemType = typeof GetTypeProductService200ItemType[keyof typeof GetTypeProductService200ItemType];
+
+
+export const GetTypeProductService200ItemType = {
+  PRODUCT: 'PRODUCT',
+  SERVICE: 'SERVICE',
+} as const;
+
+export type GetTypeProductService200Item = {
+  id: string;
+  name: string;
+  type: GetTypeProductService200ItemType;
+};
+
+export type GetTypeProductService401 = {
+  error: string;
+  code: string;
+};
+
+export type GetTypeProductService500 = {
+  error: string;
+  code: string;
+};
+
+export type CreateTypeProductServiceBodyType = typeof CreateTypeProductServiceBodyType[keyof typeof CreateTypeProductServiceBodyType];
+
+
+export const CreateTypeProductServiceBodyType = {
+  PRODUCT: 'PRODUCT',
+  SERVICE: 'SERVICE',
+} as const;
+
+export type CreateTypeProductServiceBody = {
+  /** @minLength 1 */
+  name: string;
+  type: CreateTypeProductServiceBodyType;
+};
+
+export type CreateTypeProductService201Type = typeof CreateTypeProductService201Type[keyof typeof CreateTypeProductService201Type];
+
+
+export const CreateTypeProductService201Type = {
+  PRODUCT: 'PRODUCT',
+  SERVICE: 'SERVICE',
+} as const;
+
+export type CreateTypeProductService201 = {
+  id: string;
+  name: string;
+  type: CreateTypeProductService201Type;
+};
+
+export type CreateTypeProductService401 = {
+  error: string;
+  code: string;
+};
+
+export type CreateTypeProductService500 = {
   error: string;
   code: string;
 };
@@ -498,6 +682,114 @@ export const createOrganizationProduct = async (createOrganizationProductBody: C
 
 
 
+export type getOrganizationResponse200 = {
+  data: GetOrganization200
+  status: 200
+}
+
+export type getOrganizationResponse401 = {
+  data: GetOrganization401
+  status: 401
+}
+
+export type getOrganizationResponse404 = {
+  data: GetOrganization404
+  status: 404
+}
+
+export type getOrganizationResponse500 = {
+  data: GetOrganization500
+  status: 500
+}
+
+export type getOrganizationResponseSuccess = (getOrganizationResponse200) & {
+  headers: Headers;
+};
+export type getOrganizationResponseError = (getOrganizationResponse401 | getOrganizationResponse404 | getOrganizationResponse500) & {
+  headers: Headers;
+};
+
+export type getOrganizationResponse = (getOrganizationResponseSuccess | getOrganizationResponseError)
+
+export const getGetOrganizationUrl = (id: string,) => {
+
+
+
+
+  return `/organization/${id}`
+}
+
+/**
+ * @summary Get an organization by id
+ */
+export const getOrganization = async (id: string, options?: RequestInit): Promise<getOrganizationResponse> => {
+
+  return customFetch<getOrganizationResponse>(getGetOrganizationUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+export type getOrganizationsSearchResponse200 = {
+  data: GetOrganizationsSearch200Item[]
+  status: 200
+}
+
+export type getOrganizationsSearchResponse401 = {
+  data: GetOrganizationsSearch401
+  status: 401
+}
+
+export type getOrganizationsSearchResponse500 = {
+  data: GetOrganizationsSearch500
+  status: 500
+}
+
+export type getOrganizationsSearchResponseSuccess = (getOrganizationsSearchResponse200) & {
+  headers: Headers;
+};
+export type getOrganizationsSearchResponseError = (getOrganizationsSearchResponse401 | getOrganizationsSearchResponse500) & {
+  headers: Headers;
+};
+
+export type getOrganizationsSearchResponse = (getOrganizationsSearchResponseSuccess | getOrganizationsSearchResponseError)
+
+export const getGetOrganizationsSearchUrl = (params: GetOrganizationsSearchParams,) => {
+  const normalizedParams = new URLSearchParams();
+
+  Object.entries(params || {}).forEach(([key, value]) => {
+
+    if (value !== undefined) {
+      normalizedParams.append(key, value === null ? 'null' : String(value))
+    }
+  });
+
+  const stringifiedParams = normalizedParams.toString();
+
+  return stringifiedParams.length > 0 ? `/organization/search?${stringifiedParams}` : `/organization/search`
+}
+
+/**
+ * @summary Search organizations by name, service or product
+ */
+export const getOrganizationsSearch = async (params: GetOrganizationsSearchParams, options?: RequestInit): Promise<getOrganizationsSearchResponse> => {
+
+  return customFetch<getOrganizationsSearchResponse>(getGetOrganizationsSearchUrl(params),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
 export type createProductResponse200 = {
   data: CreateProduct200
   status: 200
@@ -686,5 +978,101 @@ export const getServices = async (date: string, options?: RequestInit): Promise<
     method: 'GET'
 
 
+  }
+);}
+
+
+
+export type getTypeProductServiceResponse200 = {
+  data: GetTypeProductService200Item[]
+  status: 200
+}
+
+export type getTypeProductServiceResponse401 = {
+  data: GetTypeProductService401
+  status: 401
+}
+
+export type getTypeProductServiceResponse500 = {
+  data: GetTypeProductService500
+  status: 500
+}
+
+export type getTypeProductServiceResponseSuccess = (getTypeProductServiceResponse200) & {
+  headers: Headers;
+};
+export type getTypeProductServiceResponseError = (getTypeProductServiceResponse401 | getTypeProductServiceResponse500) & {
+  headers: Headers;
+};
+
+export type getTypeProductServiceResponse = (getTypeProductServiceResponseSuccess | getTypeProductServiceResponseError)
+
+export const getGetTypeProductServiceUrl = () => {
+
+
+
+
+  return `/types/`
+}
+
+/**
+ * @summary Get types of products and services
+ */
+export const getTypeProductService = async ( options?: RequestInit): Promise<getTypeProductServiceResponse> => {
+
+  return customFetch<getTypeProductServiceResponse>(getGetTypeProductServiceUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+);}
+
+
+
+export type createTypeProductServiceResponse201 = {
+  data: CreateTypeProductService201
+  status: 201
+}
+
+export type createTypeProductServiceResponse401 = {
+  data: CreateTypeProductService401
+  status: 401
+}
+
+export type createTypeProductServiceResponse500 = {
+  data: CreateTypeProductService500
+  status: 500
+}
+
+export type createTypeProductServiceResponseSuccess = (createTypeProductServiceResponse201) & {
+  headers: Headers;
+};
+export type createTypeProductServiceResponseError = (createTypeProductServiceResponse401 | createTypeProductServiceResponse500) & {
+  headers: Headers;
+};
+
+export type createTypeProductServiceResponse = (createTypeProductServiceResponseSuccess | createTypeProductServiceResponseError)
+
+export const getCreateTypeProductServiceUrl = () => {
+
+
+
+
+  return `/types/`
+}
+
+/**
+ * @summary Create a type of product or service
+ */
+export const createTypeProductService = async (createTypeProductServiceBody: CreateTypeProductServiceBody, options?: RequestInit): Promise<createTypeProductServiceResponse> => {
+
+  return customFetch<createTypeProductServiceResponse>(getCreateTypeProductServiceUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(createTypeProductServiceBody)
   }
 );}
