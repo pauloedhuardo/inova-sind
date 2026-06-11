@@ -154,6 +154,8 @@ export type GetOrganization200ServicesItem = {
 
 export type GetOrganization200AssessmentsItemUser = {
   name: string;
+  /** @nullable */
+  image: string | null;
 };
 
 export type GetOrganization200AssessmentsItem = {

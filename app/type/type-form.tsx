@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -23,7 +25,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { createTypeAction } from "@/app/_lib/actions/create-type"
+import { createTypeAction } from "@/app/actions/create-type"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -80,12 +82,16 @@ export function TypeForm() {
                   <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione um tipo" />
+                        <SelectValue placeholder="Selecione um tipo">
+                          {(value: string | null) =>
+                            value ? (typeOptions.find((o) => o.value === value)?.label ?? value) : null
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {typeOptions.map((opt) => (
-                        <SelectItem key={opt.value} value={opt.value}>
+                        <SelectItem key={opt.value} value={opt.value} label={opt.label}>
                           {opt.label}
                         </SelectItem>
                       ))}
@@ -107,6 +113,11 @@ export function TypeForm() {
             >
               {form.formState.isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>
+            <Link href="/">
+              <Button type="button" variant="outline" className="w-full">
+                Cancelar
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>

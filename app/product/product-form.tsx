@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -24,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createProductAction } from "@/app/_lib/actions/create-product"
+import { createProductAction } from "@/app/actions/create-product"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -54,7 +56,7 @@ export function ProductForm({ types }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cadastro de Produto</CardTitle>
+        <CardTitle className="font-bold">Cadastro de Produto</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -99,12 +101,16 @@ export function ProductForm({ types }: Props) {
                   <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione um tipo" />
+                        <SelectValue placeholder="Selecione um tipo">
+                          {(value: string | null) =>
+                            value ? (types.find((t) => t.id === value)?.name ?? value) : null
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {types.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
+                        <SelectItem key={type.id} value={type.id} label={type.name}>
                           {type.name}
                         </SelectItem>
                       ))}
@@ -126,6 +132,11 @@ export function ProductForm({ types }: Props) {
             >
               {form.formState.isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>
+            <Link href="/">
+              <Button type="button" variant="outline" className="w-full">
+                Cancelar
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>

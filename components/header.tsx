@@ -36,7 +36,10 @@ const Header = async () => {
 
                 </CardContent>
             </Card>
-            <div className="mt-4 flex gap-3 justify-center mb-6">
+            <div className="mt-4 flex gap-3 mb-6 [&::-webkit-scrollbar]:hidden ml-8">
+                <Button className="gap-2" variant="default">
+                    <Link href="/">Home</Link>
+                </Button>
                 <Button className="gap-2" variant="default">
                     <Link href="/assessment">Avaliação</Link>
                 </Button>

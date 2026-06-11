@@ -25,7 +25,7 @@ export async function linkProductAction(organizationId: string, productId: strin
   const response = await createOrganizationProduct({ organizationId, productId, user })
 
   if (response.status === 201) {
-    redirect(`/assessment?id=${organizationId}`)
+    redirect(`/organization/${organizationId}`)
   }
 
   const errorData = response.data as { error: string }
@@ -37,7 +37,7 @@ export async function linkServiceAction(organizationId: string, serviceId: strin
   const response = await createOrganizationService({ organizationId, serviceId, user })
 
   if (response.status === 201) {
-    redirect(`/assessment?id=${organizationId}`)
+    redirect(`/organization/${organizationId}`)
   }
 
   const errorData = response.data as { error: string }
@@ -64,7 +64,7 @@ export async function createAndLinkProductAction(
   })
 
   if (linkResponse.status === 201) {
-    redirect(`/assessment?id=${organizationId}`)
+    redirect(`/organization/${organizationId}`)
   }
 
   const errorData = linkResponse.data as { error: string }
@@ -90,7 +90,7 @@ export async function createAndLinkServiceAction(
   })
 
   if (linkResponse.status === 201) {
-    redirect(`/assessment?id=${organizationId}`)
+    redirect(`/organization/${organizationId}`)
   }
 
   const errorData = linkResponse.data as { error: string }

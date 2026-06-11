@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-import { linkProductAction, linkServiceAction } from "@/app/_lib/actions/link-organization"
+import { linkProductAction, linkServiceAction } from "@/app/actions/link-organization"
 
 interface Item {
   id: string
@@ -19,25 +19,9 @@ interface LinkFormProps {
   products: Item[]
   services: Item[]
   organizationId: string
-  name: string
-  cnpj?: string
-  address?: string
-  phone: string
-  email?: string
-  contact?: string
 }
 
-export function LinkForm({
-  products,
-  services,
-  organizationId,
-  name,
-  cnpj,
-  address,
-  phone,
-  email,
-  contact,
-}: LinkFormProps) {
+export function LinkForm({ products, services, organizationId }: LinkFormProps) {
   const [selectedType, setSelectedType] = useState<"product" | "service" | null>(null)
   const [selectedId, setSelectedId] = useState<string | null>(null)
   const [query, setQuery] = useState("")
@@ -51,17 +35,7 @@ export function LinkForm({
     item.name.toLowerCase().includes(query.toLowerCase()),
   )
 
-  const baseParams = new URLSearchParams({
-    organizationId,
-    name,
-    ...(cnpj && { cnpj }),
-    ...(address && { address }),
-    phone,
-    ...(email && { email }),
-    ...(contact && { contact }),
-  })
-
-  const createHref = `/organization/link?${baseParams.toString()}&type=${selectedType}&mode=create`
+  const createHref = `/organization/link?organizationId=${organizationId}&type=${selectedType}&mode=create`
 
   function handleTypeChange(value: string) {
     setSelectedType(value as "product" | "service")
@@ -92,7 +66,7 @@ export function LinkForm({
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Vincular produto ou serviço</CardTitle>
+        <CardTitle className="font-bold">Vincular produto ou serviço</CardTitle>
       </CardHeader>
       <CardContent className="space-y-4">
         <RadioGroup value={selectedType ?? ""} onValueChange={handleTypeChange}>
@@ -162,6 +136,11 @@ export function LinkForm({
             )}
           </div>
         )}
+        <Link href="/">
+          <Button type="button" variant="outline" className="w-full">
+            Cancelar
+          </Button>
+        </Link>
       </CardContent>
     </Card>
   )

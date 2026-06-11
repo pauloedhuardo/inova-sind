@@ -1,6 +1,9 @@
+import { redirect } from "next/navigation"
+
 import Header from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
+  getOrganization,
   getProducts,
   getServices,
   getTypeProductService,
@@ -15,12 +18,6 @@ import { ServiceLinkForm } from "./service-link-form"
 
 interface SearchParams {
   organizationId?: string
-  name?: string
-  cnpj?: string
-  address?: string
-  phone?: string
-  email?: string
-  contact?: string
   type?: string
   mode?: string
 }
@@ -30,25 +27,20 @@ interface PageProps {
 }
 
 export default async function OrganizationLinkPage({ searchParams }: PageProps) {
-  const params = await searchParams
-  const {
-    organizationId = "",
-    name = "",
-    cnpj,
-    address,
-    phone = "",
-    email = "",
-    contact,
-    type,
-    mode,
-  } = params
+  const { organizationId = "", type, mode } = await searchParams
+
+  if (!organizationId) redirect("/")
 
   const date = new Date().toISOString().split("T")[0]
-  const [productsResponse, servicesResponse, typesResponse] = await Promise.all([
+  const [orgResponse, productsResponse, servicesResponse, typesResponse] = await Promise.all([
+    getOrganization(organizationId),
     getProducts(),
     getServices(date),
     getTypeProductService(),
   ])
+
+  if (orgResponse.status !== 200) redirect("/")
+  const org = orgResponse.data
 
   const products: GetProducts200Item[] =
     productsResponse.status === 200 ? productsResponse.data : []
@@ -67,37 +59,37 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
           </CardHeader>
           <CardContent className="space-y-1 text-sm">
             <div className="flex flex-row">
-              <span className="text-muted-foreground font-semibold">Empresa/prestador:</span>{" "}
-              <h1 className="font-semibold pl-1">{name}</h1>
+              <span className="text-muted-foreground font-semibold">Empresa/prestador:</span>
+              <span className="font-semibold pl-1">{org.name}</span>
             </div>
-            {cnpj && (
+            {org.cnpj && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground font-semibold">CNPJ:</span>
-                <h1 className="font-semibold pl-1">{cnpj}</h1>
+                <span className="font-semibold pl-1">{org.cnpj}</span>
               </div>
             )}
-            {address && (
+            {org.address && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground">Endereço:</span>
-                <h1 className="font-semibold pl-1">{address}</h1>
+                <span className="font-semibold pl-1">{org.address}</span>
               </div>
             )}
-            {phone && (
+            {org.phone && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground">Telefone:</span>
-                <h1 className="font-semibold pl-1">{phone}</h1>
+                <span className="font-semibold pl-1">{org.phone}</span>
               </div>
             )}
-            {email && (
+            {org.email && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground">Email:</span>
-                <h1 className="font-semibold pl-1">{contact}</h1>
+                <span className="font-semibold pl-1">{org.email}</span>
               </div>
             )}
-            {contact && (
+            {org.contact && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground">Contato:</span>
-                <h1 className="font-semibold pl-1">{contact}</h1>
+                <span className="font-semibold pl-1">{org.contact}</span>
               </div>
             )}
           </CardContent>
@@ -108,17 +100,7 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
         ) : mode === "create" && type === "service" ? (
           <ServiceLinkForm organizationId={organizationId} types={types} />
         ) : (
-          <LinkForm
-            products={products}
-            services={services}
-            organizationId={organizationId}
-            name={name}
-            cnpj={cnpj}
-            address={address}
-            phone={phone}
-            email={email}
-            contact={contact}
-          />
+          <LinkForm products={products} services={services} organizationId={organizationId} />
         )}
       </div>
     </div>

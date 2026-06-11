@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import {
   Card,
@@ -21,7 +23,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { createOrganizationAction } from "@/app/_lib/actions/create-organization"
+import { createOrganizationAction } from "@/app/actions/create-organization"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -76,7 +78,7 @@ export function OrganizationForm() {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cadastro de Organização</CardTitle>
+        <CardTitle className="font-bold">Cadastro de Organização</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -182,6 +184,11 @@ export function OrganizationForm() {
             >
               {form.formState.isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>
+            <Link href="/">
+              <Button type="button" variant="outline" className="w-full">
+                Cancelar
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>

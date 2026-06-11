@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -24,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createServiceAction } from "@/app/_lib/actions/create-service"
+import { createServiceAction } from "@/app/actions/create-service"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -54,7 +56,7 @@ export function ServiceForm({ types }: Props) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Cadastro de Serviço</CardTitle>
+        <CardTitle className="font-bold">Cadastro de Serviço</CardTitle>
       </CardHeader>
       <CardContent>
         <Form {...form}>
@@ -99,12 +101,16 @@ export function ServiceForm({ types }: Props) {
                   <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione um tipo" />
+                        <SelectValue placeholder="Selecione um tipo">
+                          {(value: string | null) =>
+                            value ? (types.find((t) => t.id === value)?.name ?? value) : null
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {types.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
+                        <SelectItem key={type.id} value={type.id} label={type.name}>
                           {type.name}
                         </SelectItem>
                       ))}
@@ -126,6 +132,11 @@ export function ServiceForm({ types }: Props) {
             >
               {form.formState.isSubmitting ? "Cadastrando..." : "Cadastrar"}
             </Button>
+            <Link href="/">
+              <Button type="button" variant="outline" className="w-full">
+                Cancelar
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>

@@ -4,6 +4,8 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import Link from "next/link"
+
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -24,7 +26,7 @@ import {
 } from "@/components/ui/select"
 import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createAndLinkServiceAction } from "@/app/_lib/actions/link-organization"
+import { createAndLinkServiceAction } from "@/app/actions/link-organization"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
@@ -100,12 +102,16 @@ export function ServiceLinkForm({ organizationId, types }: ServiceLinkFormProps)
                   <Select value={field.value} onValueChange={(v) => field.onChange(v)}>
                     <FormControl>
                       <SelectTrigger className="w-full">
-                        <SelectValue placeholder="Selecione um tipo" />
+                        <SelectValue placeholder="Selecione um tipo">
+                          {(value: string | null) =>
+                            value ? (types.find((t) => t.id === value)?.name ?? value) : null
+                          }
+                        </SelectValue>
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent>
                       {types.map((type) => (
-                        <SelectItem key={type.id} value={type.id}>
+                        <SelectItem key={type.id} value={type.id} label={type.name}>
                           {type.name}
                         </SelectItem>
                       ))}
@@ -127,6 +133,11 @@ export function ServiceLinkForm({ organizationId, types }: ServiceLinkFormProps)
             >
               {form.formState.isSubmitting ? "Cadastrando..." : "Cadastrar e vincular"}
             </Button>
+            <Link href="/">
+              <Button type="button" variant="outline" className="w-full">
+                Cancelar
+              </Button>
+            </Link>
           </form>
         </Form>
       </CardContent>

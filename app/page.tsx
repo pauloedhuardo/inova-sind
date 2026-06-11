@@ -18,7 +18,11 @@ export default async function Home() {
   if (!session.data?.user) redirect("/auth");
 
   const organizationsResponse = await getOrganizations();
-  const organizations = organizationsResponse.status === 200 ? organizationsResponse.data : [];
+  const organizations = (organizationsResponse.status === 200 ? organizationsResponse.data : [])
+    .sort((a, b) => {
+      const scoreDiff = (b.averageScore ?? 0) - (a.averageScore ?? 0)
+      return scoreDiff !== 0 ? scoreDiff : a.name.localeCompare(b.name, "pt-BR")
+    })
 
   return (
     <div className="flex flex-col p-4">
@@ -29,7 +33,7 @@ export default async function Home() {
         </h2>
         <div className="flex gap-3 [&::-webkit-scrollbar]:hidden">
           {organizations.map((org) => (
-            <Link key={org.id} href={`/assessment?id=${org.id}`}>
+            <Link key={org.id} href={`/organization/${org.id}`}>
               <OrganizationCard organization={{ name: org.name, score: org.averageScore ?? 0 }} />
             </Link>
           ))}
