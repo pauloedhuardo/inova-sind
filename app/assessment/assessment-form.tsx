@@ -19,7 +19,7 @@ import { Input } from "@/components/ui/input"
 import { Slider } from "@/components/ui/slider"
 import type { GetOrganizations200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createAssessmentAction } from "./actions"
+import { createAssessmentAction } from "@/app/_lib/actions/create-assessment"
 
 const formSchema = z.object({
   organizationId: z.string().min(1, "Selecione uma organização"),

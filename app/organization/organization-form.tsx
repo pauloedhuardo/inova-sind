@@ -21,7 +21,7 @@ import {
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
 
-import { createOrganizationAction } from "./actions"
+import { createOrganizationAction } from "@/app/_lib/actions/create-organization"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),

@@ -23,7 +23,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { createTypeAction } from "./actions"
+import { createTypeAction } from "@/app/_lib/actions/create-type"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),

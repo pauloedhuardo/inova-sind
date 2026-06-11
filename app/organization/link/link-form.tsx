@@ -8,7 +8,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Input } from "@/components/ui/input"
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 
-import { linkProductAction, linkServiceAction } from "./actions"
+import { linkProductAction, linkServiceAction } from "@/app/_lib/actions/link-organization"
 
 interface Item {
   id: string

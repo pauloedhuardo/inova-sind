@@ -24,7 +24,7 @@ import {
 } from "@/components/ui/select"
 import type { GetTypeProductService200Item } from "@/app/_lib/api/fetch-generated"
 
-import { createAndLinkServiceAction } from "./actions"
+import { createAndLinkServiceAction } from "@/app/_lib/actions/link-organization"
 
 const formSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório"),
