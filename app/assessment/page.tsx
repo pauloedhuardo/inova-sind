@@ -25,7 +25,7 @@ export default async function AssessmentPage({ searchParams }: PageProps) {
   const selectedOrg = id ? organizations.find((o) => o.id === id) : undefined
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 sm:p-6">
       <Header />
       <div className="mx-auto w-full max-w-md space-y-4">
         {selectedOrg && (

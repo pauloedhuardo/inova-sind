@@ -25,13 +25,13 @@ export default async function Home() {
     })
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 sm:p-6">
       <Header />
       <div className="mx-auto w-full max-w-md">
         <h2 className="mt-6 mb-3 text-xs font-bold uppercase">
           Empresas recomendadas
         </h2>
-        <div className="flex gap-3 [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
           {organizations.map((org) => (
             <Link key={org.id} href={`/organization/${org.id}`}>
               <OrganizationCard organization={{ name: org.name, score: org.averageScore ?? 0 }} />

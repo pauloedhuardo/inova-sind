@@ -1,5 +1,6 @@
 import { redirect } from "next/navigation"
 
+import { formatPhone } from "@/lib/utils"
 import Header from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import {
@@ -50,7 +51,7 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
     typesResponse.status === 200 ? typesResponse.data : []
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 sm:p-6">
       <Header />
       <div className="mx-auto w-full max-w-md space-y-4">
         <Card>
@@ -77,7 +78,7 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
             {org.phone && (
               <div className="flex flex-row">
                 <span className="text-muted-foreground">Telefone:</span>
-                <span className="font-semibold pl-1">{org.phone}</span>
+                <span className="font-semibold pl-1">{formatPhone(org.phone)}</span>
               </div>
             )}
             {org.email && (

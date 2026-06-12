@@ -3,6 +3,7 @@ import { redirect } from "next/navigation"
 
 import { authClient } from "@/app/_lib/auth-client"
 import { getOrganization } from "@/app/_lib/api/fetch-generated"
+import { formatPhone } from "@/lib/utils"
 import Header from "@/components/header"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
@@ -28,7 +29,7 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
   const org = response.data
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 sm:p-6">
       <Header />
       <div className="mx-auto w-full max-w-md space-y-4">
         <Card>
@@ -42,7 +43,7 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
               </p>
             )}
             <p>
-              <span className="font-semibold">Telefone:</span> {org.phone}
+              <span className="font-semibold">Telefone:</span> {formatPhone(org.phone)}
             </p>
             {org.address && (
               <p>
@@ -62,11 +63,11 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
           </CardContent>
         </Card>
 
-        <div className="mt-4 flex gap-3 mb-6 w-full">
-          <Button className="gap-2" variant="secondary">
+        <div className="mt-4 flex flex-col gap-3 mb-6 sm:flex-row">
+          <Button className="w-full sm:w-auto" variant="secondary">
             <Link href={`/organization/link?organizationId=${org.id}`}>Avaliar</Link>
           </Button>
-          <Button className="gap-2" variant="secondary">
+          <Button className="w-full sm:w-auto" variant="secondary">
             <Link href={`/assessment?id=${org.id}`}>Vincular Serviço ou Produto</Link>
           </Button>
         </div>

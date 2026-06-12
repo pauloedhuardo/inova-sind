@@ -12,7 +12,7 @@ export default async function ServicePage() {
     typesResponse.status === 200 ? typesResponse.data : []
 
   return (
-    <div className="flex flex-col p-4">
+    <div className="flex flex-col p-4 sm:p-6">
       <Header />
       <div className="mx-auto w-full max-w-md">
         <ServiceForm types={types} />
