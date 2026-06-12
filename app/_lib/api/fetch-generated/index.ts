@@ -402,6 +402,35 @@ export type CreateTypeProductService500 = {
   code: string;
 };
 
+export type UpdateUserBody = {
+  /** @minLength 1 */
+  phone?: string;
+  phoneVerified?: boolean;
+};
+
+export type UpdateUser200 = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string;
+  phoneVerified: boolean;
+};
+
+export type UpdateUser401 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateUser404 = {
+  error: string;
+  code: string;
+};
+
+export type UpdateUser500 = {
+  error: string;
+  code: string;
+};
+
 export type getResponse200 = {
   data: Get200
   status: 200
@@ -1076,5 +1105,59 @@ export const createTypeProductService = async (createTypeProductServiceBody: Cre
     method: 'POST',
     headers: { 'Content-Type': 'application/json', ...options?.headers },
     body: JSON.stringify(createTypeProductServiceBody)
+  }
+);}
+
+
+
+export type updateUserResponse200 = {
+  data: UpdateUser200
+  status: 200
+}
+
+export type updateUserResponse401 = {
+  data: UpdateUser401
+  status: 401
+}
+
+export type updateUserResponse404 = {
+  data: UpdateUser404
+  status: 404
+}
+
+export type updateUserResponse500 = {
+  data: UpdateUser500
+  status: 500
+}
+
+export type updateUserResponseSuccess = (updateUserResponse200) & {
+  headers: Headers;
+};
+export type updateUserResponseError = (updateUserResponse401 | updateUserResponse404 | updateUserResponse500) & {
+  headers: Headers;
+};
+
+export type updateUserResponse = (updateUserResponseSuccess | updateUserResponseError)
+
+export const getUpdateUserUrl = (id: string,) => {
+
+
+
+
+  return `/user/${id}`
+}
+
+/**
+ * @summary Update user phone or phone verification status
+ */
+export const updateUser = async (id: string,
+    updateUserBody: UpdateUserBody, options?: RequestInit): Promise<updateUserResponse> => {
+
+  return customFetch<updateUserResponse>(getUpdateUserUrl(id),
+  {
+    ...options,
+    method: 'PATCH',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(updateUserBody)
   }
 );}

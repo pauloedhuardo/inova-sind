@@ -6,6 +6,7 @@ import { getOrganizations } from "./_lib/api/fetch-generated";
 import OrganizationCard from "@/components/organizationCard";
 import OrganizationSearch from "@/components/organizationSearch";
 import Link from "next/link";
+import { PhoneUpdateDialog } from "@/components/phone-update-dialog";
 
 export default async function Home() {
 
@@ -17,6 +18,9 @@ export default async function Home() {
 
   if (!session.data?.user) redirect("/auth");
 
+  const user = session.data.user as typeof session.data.user & { phoneVerified?: boolean }
+  const phoneVerified = user.phoneVerified ?? false
+
   const organizationsResponse = await getOrganizations();
   const organizations = (organizationsResponse.status === 200 ? organizationsResponse.data : [])
     .sort((a, b) => {
@@ -26,6 +30,7 @@ export default async function Home() {
 
   return (
     <div className="flex flex-col p-4 sm:p-6">
+      <PhoneUpdateDialog userId={user.id} phoneVerified={phoneVerified} />
       <Header />
       <div className="mx-auto w-full max-w-md">
         <h2 className="mt-6 mb-3 text-xs font-bold uppercase">

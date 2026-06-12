@@ -7,6 +7,7 @@ import Image from "next/image"
 import { Button, buttonVariants } from "./ui/button"
 import { Card, CardContent } from "./ui/card"
 import { cn } from "@/lib/utils"
+import { handleLogout } from "@/app/_lib/auth-client"
 
 export interface NavLink {
   href: string
@@ -61,6 +62,9 @@ export function HeaderClient({ links }: { links: NavLink[] }) {
               {link.label}
             </Link>
           ))}
+          <Button variant="destructive" className="w-full justify-start" onClick={handleLogout}>
+            Sair
+          </Button>
         </nav>
       )}
 
@@ -74,6 +78,9 @@ export function HeaderClient({ links }: { links: NavLink[] }) {
             {link.label}
           </Link>
         ))}
+        <Button variant="destructive" onClick={handleLogout}>
+          Sair
+        </Button>
       </nav>
     </header>
   )
