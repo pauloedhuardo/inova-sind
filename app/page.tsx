@@ -36,7 +36,7 @@ export default async function Home() {
         <h2 className="mt-6 mb-3 text-xs font-bold uppercase">
           Empresas recomendadas
         </h2>
-        <div className="flex gap-3 overflow-x-auto [&::-webkit-scrollbar]:hidden">
+        <div className="flex gap-3 [&::-webkit-scrollbar]:hidden">
           {organizations.map((org) => (
             <Link key={org.id} href={`/organization/${org.id}`}>
               <OrganizationCard organization={{ name: org.name, score: org.averageScore ?? 0 }} />
