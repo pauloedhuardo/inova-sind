@@ -18,7 +18,7 @@ import { ProductLinkForm } from "./product-link-form"
 import { ServiceLinkForm } from "./service-link-form"
 
 interface SearchParams {
-  organizationId?: string
+  IdOrganization?: string
   type?: string
   mode?: string
 }
@@ -28,13 +28,13 @@ interface PageProps {
 }
 
 export default async function OrganizationLinkPage({ searchParams }: PageProps) {
-  const { organizationId = "", type, mode } = await searchParams
+  const { IdOrganization = "", type, mode } = await searchParams
 
-  if (!organizationId) redirect("/")
+  if (!IdOrganization) redirect("/")
 
   const date = new Date().toISOString().split("T")[0]
   const [orgResponse, productsResponse, servicesResponse, typesResponse] = await Promise.all([
-    getOrganization(organizationId),
+    getOrganization(IdOrganization),
     getProducts(),
     getServices(date),
     getTypeProductService(),
@@ -97,11 +97,11 @@ export default async function OrganizationLinkPage({ searchParams }: PageProps) 
         </Card>
 
         {mode === "create" && type === "product" ? (
-          <ProductLinkForm organizationId={organizationId} types={types} />
+          <ProductLinkForm IdOrganization={IdOrganization} types={types} />
         ) : mode === "create" && type === "service" ? (
-          <ServiceLinkForm organizationId={organizationId} types={types} />
+          <ServiceLinkForm IdOrganization={IdOrganization} types={types} />
         ) : (
-          <LinkForm products={products} services={services} organizationId={organizationId} />
+          <LinkForm products={products} services={services} organizationId={IdOrganization} />
         )}
       </div>
     </div>

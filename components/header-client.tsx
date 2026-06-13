@@ -31,7 +31,7 @@ export function HeaderClient({ links }: { links: NavLink[] }) {
             />
             <div className="min-w-0">
               <h1 className="truncate font-bold text-xl leading-tight">Inova Sind</h1>
-              <p className="hidden sm:block truncate text-xs text-muted-foreground">
+              <p className="text-xs text-muted-foreground font-bold">
                 Informações para síndicos
               </p>
             </div>

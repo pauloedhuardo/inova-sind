@@ -8,7 +8,7 @@ import {
 import { AssessmentForm } from "./assessment-form"
 
 interface SearchParams {
-  id?: string
+  idOrganization?: string
 }
 
 interface PageProps {
@@ -16,13 +16,13 @@ interface PageProps {
 }
 
 export default async function AssessmentPage({ searchParams }: PageProps) {
-  const { id } = await searchParams
+  const { idOrganization } = await searchParams
 
   const orgsResponse = await getOrganizations()
   const organizations: GetOrganizations200Item[] =
     orgsResponse.status === 200 ? orgsResponse.data : []
 
-  const selectedOrg = id ? organizations.find((o) => o.id === id) : undefined
+  const selectedOrg = idOrganization ? organizations.find((o) => o.id === idOrganization) : undefined
 
   return (
     <div className="flex flex-col p-4 sm:p-6">
@@ -42,7 +42,7 @@ export default async function AssessmentPage({ searchParams }: PageProps) {
           </Card>
         )}
 
-        <AssessmentForm organizations={organizations} organizationId={id} />
+        <AssessmentForm organizations={organizations} organizationId={idOrganization} />
       </div>
     </div>
   )

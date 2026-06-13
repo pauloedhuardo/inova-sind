@@ -65,10 +65,10 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
 
         <div className="mt-4 flex flex-col gap-3 mb-6 sm:flex-row">
           <Button className="w-full sm:w-auto" variant="secondary">
-            <Link href={`/organization/link?organizationId=${org.id}`}>Avaliar</Link>
+            <Link href={`/assessment?idOrganization=${org.id}`}>Avaliar</Link>
           </Button>
+          <Link href={`/organization/link?IdOrganization=${org.id}`}>Vincular Serviço ou Produto</Link>
           <Button className="w-full sm:w-auto" variant="secondary">
-            <Link href={`/assessment?id=${org.id}`}>Vincular Serviço ou Produto</Link>
           </Button>
         </div>
 

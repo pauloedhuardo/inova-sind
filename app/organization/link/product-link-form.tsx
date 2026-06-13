@@ -37,18 +37,18 @@ const formSchema = z.object({
 type FormValues = z.infer<typeof formSchema>
 
 interface ProductLinkFormProps {
-  organizationId: string
+  IdOrganization: string
   types: GetTypeProductService200Item[]
 }
 
-export function ProductLinkForm({ organizationId, types }: ProductLinkFormProps) {
+export function ProductLinkForm({ IdOrganization, types }: ProductLinkFormProps) {
   const form = useForm<FormValues>({
     resolver: zodResolver(formSchema),
     defaultValues: { name: "", description: "", typeId: "" },
   })
 
   async function onSubmit(values: FormValues) {
-    const result = await createAndLinkProductAction(organizationId, values)
+    const result = await createAndLinkProductAction(IdOrganization, values)
     if (result?.error) {
       form.setError("root", { message: result.error })
     }
