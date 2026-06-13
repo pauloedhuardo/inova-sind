@@ -67,8 +67,8 @@ export default async function OrganizationDetailPage({ params }: PageProps) {
           <Button className="w-full sm:w-auto" variant="secondary">
             <Link href={`/assessment?idOrganization=${org.id}`}>Avaliar</Link>
           </Button>
-          <Link href={`/organization/link?IdOrganization=${org.id}`}>Vincular Serviço ou Produto</Link>
           <Button className="w-full sm:w-auto" variant="secondary">
+            <Link href={`/organization/link?IdOrganization=${org.id}`}>Vincular Serviço ou Produto</Link>
           </Button>
         </div>
 
